@@ -1,5 +1,7 @@
 /**
  * @author Girish Raman
+ * From 'Cracking the Coding Interview'
+ * 
  * Checks if a String has all unique characters, without using any data structures!
  */
 package girish.ctci.project;

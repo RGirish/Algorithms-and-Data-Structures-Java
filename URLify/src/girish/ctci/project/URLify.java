@@ -3,13 +3,14 @@
  * From 'Cracking the Coding Interview'
  * 
  * This program replaces the spaces within a string with %20, making it suitable for a url.
+ * (I have no idea why I did it using a char[]. :/ but well, this works too.) 
  */
 package girish.ctci.project;
 
 public class URLify {
 
 	public static void main(String[] args){
-		String string = "Mr. John Smith    ";
+		String string = "Hey, Girish! How you doin man?!          ";
 		System.out.println(URLifyString(string));
 	}
 	
@@ -36,6 +37,5 @@ public class URLify {
 			i++;
 		}
 		return String.valueOf(characterSequence);
-	}
-	
+	}	
 }

@@ -1,5 +1,7 @@
 package girish.ctci.project;
 
+import java.util.ArrayList;
+
 public class Node {
 
 	Node next;
@@ -19,7 +21,7 @@ public class Node {
 		n.next = newNode;
 	}
 	
-	public Node deleteNode(Node head, int i){
+	public Node deleteFirstOccurance(Node head, int i){
 		Node n = head;
 		if(n.i == i){
 			return n.next;
@@ -32,6 +34,20 @@ public class Node {
 			n = n.next;
 		}
 		return head;
+	}
+	
+	public void deleteDups(Node node){
+		Node previous = null;
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		while(node != null){
+			if(list.contains(node.i)){
+				previous.next = node.next;
+			}else{
+				list.add(node.i);
+				previous = node;
+			}
+			node = node.next;
+		}
 	}
 	
 }

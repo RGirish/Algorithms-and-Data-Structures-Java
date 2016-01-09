@@ -5,17 +5,17 @@ import java.lang.reflect.Array;
 public class Sort {
 
 	public static void main(String[] args) {
-		int[] unsortedArray = { 140, 79, 964, 27, 801, 251 };
-		printArray(unsortedArray);
-		int[] sortedArray = quickSort(unsortedArray);
-		printArray(sortedArray);
+		int[] array = { 140, 79, 964, 27, 801, 251 };
+		printArray(array);
+		insertionSort(array);
+		printArray(array);
 	}
 
-	static int[] quickSort(int[] unsortedarray) {
-		if (count(unsortedarray) <= 1)
-			return unsortedarray;
-		qSort(unsortedarray, 0, count(unsortedarray) - 1);
-		return unsortedarray;
+	static int[] quickSort(int[] array) {
+		if (count(array) <= 1)
+			return array;
+		qSort(array, 0, count(array) - 1);
+		return array;
 	}
 
 	public static void qSort(int[] array, int lo, int hi) {
@@ -69,18 +69,52 @@ public class Sort {
 	/*
 	 * Bubble Sort
 	 */
-	static int[] bubbleSort(int[] unsortedarray) {
-		int count = count(unsortedarray);
-		for (int i = count; i >= 0; --i) {
+	static void bubbleSort(int[] array) {
+		int count = count(array);
+		for (int i = count; i > 0; --i) {
 			for (int j = 0; j < i - 1; ++j) {
-				if (unsortedarray[j] > unsortedarray[j + 1]) {
-					unsortedarray[j] = unsortedarray[j] + unsortedarray[j + 1];
-					unsortedarray[j + 1] = unsortedarray[j] - unsortedarray[j + 1];
-					unsortedarray[j] = unsortedarray[j] - unsortedarray[j + 1];
+				if (array[j] > array[j + 1]) {
+					array[j] = array[j] + array[j + 1];
+					array[j + 1] = array[j] - array[j + 1];
+					array[j] = array[j] - array[j + 1];
 				}
 			}
 		}
-		return unsortedarray;
+	}
+
+	/*
+	 * Selection Sort
+	 */
+	static void selectionSort(int[] array) {
+		int count = count(array);
+		for (int i = 0; i < count - 1; ++i) {
+			int min = i;
+			for (int j = i; j < count; ++j)
+				if (array[j] < array[min])
+					min = j;
+			if (min != i) {
+				int temp = array[i];
+				array[i] = array[min];
+				array[min] = temp;
+			}
+		}
+	}
+
+	/*
+	 * Insertion Sort
+	 */
+	static void insertionSort(int[] array) {
+		int count = count(array);
+		int element = 0, j = 0;
+		for (int i = 1; i < count; ++i) {
+			element = array[i];
+			j = i;
+			while (j > 0 && array[j - 1] > element) {
+				array[j] = array[j - 1];
+				j = j - 1;
+			}
+			array[j] = element;
+		}
 	}
 
 	/*

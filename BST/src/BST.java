@@ -55,16 +55,16 @@ public class BST {
 	}
 	
 	void printPostOrder(Node node) {
-		if(node.left != null) printInOrder(node.left);
-		if(node.right != null) printInOrder(node.right);
+		if(node.left != null) printPostOrder(node.left);
+		if(node.right != null) printPostOrder(node.right);
 		System.out.print(node.n + " ");
 		
 	}
 	
 	void printPreOrder(Node node) {
 		System.out.print(node.n + " ");
-		if(node.left != null) printInOrder(node.left);
-		if(node.right != null) printInOrder(node.right);
+		if(node.left != null) printPreOrder(node.left);
+		if(node.right != null) printPreOrder(node.right);
 	}
 
 }

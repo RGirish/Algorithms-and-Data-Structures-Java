@@ -11,14 +11,6 @@ public class SparseArrays {
 		HashMap<String, Integer> list = new HashMap<String, Integer>();
 		System.out.println("Enter " + N + " strings: ");
 		
-		for (int i = 0; i < N; i++) {
-			String s = scan.nextLine();
-			if (list.containsKey(s)) {
-				list.replace(s, list.get(s) + 1);
-			} else {
-				list.put(s, 1);
-			}
-		}
 		System.out.println("Enter Q: ");
 		int Q = Integer.parseInt(scan.nextLine());
 		System.out.println("Enter " + Q + " queries: ");

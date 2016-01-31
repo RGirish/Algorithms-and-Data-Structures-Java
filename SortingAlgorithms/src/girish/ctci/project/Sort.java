@@ -1,20 +1,20 @@
 package girish.ctci.project;
 
-import java.lang.reflect.Array;
-
 public class Sort {
 
 	public static void main(String[] args) {
 		int[] array = { 140, 79, 964, 27, 801, 251 };
-		printArray(array);
-		insertionSort(array);
-		printArray(array);
+		/*
+		 * printArray(array); bubbleSort(array); printArray(array);
+		 */
+		int[] result = merge(new int[] { 1, 3, 5, 9 }, new int[] { 20, 24, 26 });
+		printArray(result);
 	}
 
 	static int[] quickSort(int[] array) {
-		if (count(array) <= 1)
+		if (array.length <= 1)
 			return array;
-		qSort(array, 0, count(array) - 1);
+		qSort(array, 0, array.length - 1);
 		return array;
 	}
 
@@ -70,7 +70,7 @@ public class Sort {
 	 * Bubble Sort
 	 */
 	static void bubbleSort(int[] array) {
-		int count = count(array);
+		int count = array.length;
 		for (int i = count; i > 0; --i) {
 			for (int j = 0; j < i - 1; ++j) {
 				if (array[j] > array[j + 1]) {
@@ -86,16 +86,16 @@ public class Sort {
 	 * Selection Sort
 	 */
 	static void selectionSort(int[] array) {
-		int count = count(array);
+		int count = array.length;
 		for (int i = 0; i < count - 1; ++i) {
-			int min = i;
-			for (int j = i; j < count; ++j)
-				if (array[j] < array[min])
-					min = j;
-			if (min != i) {
+			int minPos = i;
+			for (int j = i + 1; j < count; ++j)
+				if (array[j] < array[minPos])
+					minPos = j;
+			if (minPos != i) {
 				int temp = array[i];
-				array[i] = array[min];
-				array[min] = temp;
+				array[i] = array[minPos];
+				array[minPos] = temp;
 			}
 		}
 	}
@@ -104,8 +104,8 @@ public class Sort {
 	 * Insertion Sort
 	 */
 	static void insertionSort(int[] array) {
-		int count = count(array);
-		int element = 0, j = 0;
+		int count = array.length;
+		int element, j = 0;
 		for (int i = 1; i < count; ++i) {
 			element = array[i];
 			j = i;
@@ -118,14 +118,28 @@ public class Sort {
 	}
 
 	/*
-	 * General use methods.
+	 * Merge Sort
 	 */
-	static int count(int[] array) {
-		return Array.getLength(array);
+
+	static int[] merge(int[] a, int[] b) {
+		int[] result = new int[a.length + b.length];
+		int i = 0, aPos = 0, bPos = 0;
+		while (i < result.length) {
+			if (aPos < a.length && bPos == b.length) {
+				result[i++] = a[aPos++];
+				continue;
+			}
+			if (bPos < b.length && aPos == a.length) {
+				result[i++] = b[bPos++];
+				continue;
+			}
+			result[i++] = (a[aPos] < b[bPos]) ? a[aPos++] : b[bPos++];
+		}
+		return result;
 	}
 
 	static void printArray(int[] array) {
-		int n = count(array);
+		int n = array.length;
 		System.out.println("\n");
 		for (int i = 0; i < n; ++i) {
 			System.out.print(array[i] + " ");

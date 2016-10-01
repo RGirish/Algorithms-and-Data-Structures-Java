@@ -8,9 +8,11 @@ public class Main {
 		list.insert(50);
 		list.insert(60);
 		list.insert(70);
+		list.insert(80);
+		list.insert(90);
 		list.print();
 
-		Node node = list.reverse(list.firstNode);
+		Node node = list.reverseBetween(list.firstNode, 1, 7);
 		list.print(node);
 	}
 }

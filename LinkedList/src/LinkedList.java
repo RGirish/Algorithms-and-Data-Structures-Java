@@ -85,6 +85,41 @@ public class LinkedList {
 		System.out.println(n + " does not exist.");
 	}
 
+	public Node reverseBetween(Node node, int i, int j) {
+		Node head = node;
+
+		// Traverse to the ith position
+		int pos = 0;
+		Node beforei = null;
+		while (node != null && pos < i) {
+			pos++;
+			beforei = node;
+			node = node.nextNode;
+		}
+
+		// Start to reverse, go till the jth position
+		Node firstPrev = node;
+		Node prev = node;
+		Node curr = node.nextNode;
+		Node next = curr.nextNode;
+		while (curr != null && pos < j) {
+			curr.nextNode = prev;
+			prev = curr;
+			curr = next;
+			if (next != null) {
+				next = next.nextNode;
+			}
+			pos++;
+		}
+		firstPrev.nextNode = curr;
+		if (beforei == null) {
+			return prev;
+		} else {
+			beforei.nextNode = prev;
+		}
+		return head;
+	}
+
 	public Node reverse(Node node) {
 		Node prev = node;
 		Node curr = node.nextNode;

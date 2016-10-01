@@ -1,38 +1,16 @@
-
 public class Main {
 
 	public static void main(String[] args) {
-		LinkedList list = new LinkedList(20);
+		LinkedList list = new LinkedList(10);
 		list.insert(20);
-		list.insert(20);
-		list.insert(20);
+		list.insert(30);
+		list.insert(40);
 		list.insert(50);
-		list.insert(30);
-		list.insert(90);
-		list.insert(100);
-		list.insert(20);
-		list.insert(20);
-		list.insert(20);
-		list.insert(20);
-		list.insert(20);
-		list.insert(30);
-		list.insert(30);
-		list.insert(20);
-		list.insert(20);
-		list.insert(20);
-		list.insert(20);
+		list.insert(60);
+		list.insert(70);
 		list.print();
 
-		list.removeFirst(20);
-		list.print();
-
-		list.removeAll(20);
-		list.print();
-
-		list.search(909);
-		
-		list.reverse();
-		list.print();
+		Node node = list.reverse(list.firstNode);
+		list.print(node);
 	}
-
 }

@@ -1,4 +1,3 @@
-
 public class LinkedList {
 
 	Node firstNode = null;
@@ -26,6 +25,15 @@ public class LinkedList {
 		while (temp != null) {
 			System.out.print(temp.n + " -> ");
 			temp = temp.nextNode;
+		}
+		System.out.print("END");
+		System.out.println();
+	}
+
+	public void print(Node node) {
+		while (node != null) {
+			System.out.print(node.n + " -> ");
+			node = node.nextNode;
 		}
 		System.out.print("END");
 		System.out.println();
@@ -77,32 +85,22 @@ public class LinkedList {
 		System.out.println(n + " does not exist.");
 	}
 
-	void reverse() {
-		if (firstNode.nextNode.nextNode == null) {
-			Node two = firstNode.nextNode;
-			two.nextNode = firstNode;
-			firstNode.nextNode = null;
-			firstNode = two;
-		} else {
-			Node previous = firstNode;
-			Node previousAhead = previous.nextNode;
-			Node current = previousAhead;
-			Node currentAhead = current.nextNode;
-			int count = 0;
-			while (true) {
-				previousAhead.nextNode = previous;
-				if (count == 0) {
-					previous.nextNode = null;
-					count++;
-				}
-				current = currentAhead;
-				if (current == null)
-					break;
-				currentAhead = current.nextNode;
-				previous = previousAhead;
-				previousAhead = current;
-			}
-			firstNode = previousAhead;
+	public Node reverse(Node node) {
+		Node prev = node;
+		Node curr = node.nextNode;
+		if (curr == null) {
+			return node;
 		}
+		Node next = curr.nextNode;
+		prev.nextNode = null;
+		while (curr != null) {
+			curr.nextNode = prev;
+			prev = curr;
+			curr = next;
+			if (next != null) {
+				next = next.nextNode;
+			}
+		}
+		return prev;
 	}
 }

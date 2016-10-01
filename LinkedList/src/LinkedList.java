@@ -85,6 +85,34 @@ public class LinkedList {
 		System.out.println(n + " does not exist.");
 	}
 
+	public Node reverseSecondHalf(Node node) {
+		Node head = node;
+		Node slow = node;
+		Node fast = node;
+		while (fast.nextNode != null && fast.nextNode.nextNode != null) {
+			slow = slow.nextNode;
+			fast = fast.nextNode.nextNode;
+		}
+
+		// Halfway reached. Start reversing.
+		Node prev = slow.nextNode;
+		Node curr = prev.nextNode;
+		if (curr == null)
+			return head;
+		Node next = curr.nextNode;
+		prev.nextNode = null;
+		while (curr != null) {
+			curr.nextNode = prev;
+			prev = curr;
+			curr = next;
+			if (next != null) {
+				next = next.nextNode;
+			}
+		}
+		slow.nextNode = prev;
+		return head;
+	}
+
 	public Node reverseBetween(Node node, int i, int j) {
 		Node head = node;
 

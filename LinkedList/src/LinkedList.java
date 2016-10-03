@@ -166,4 +166,35 @@ public class LinkedList {
 		}
 		return prev;
 	}
+
+	public Node rotate(Node node, int times) {
+		Node orgHead = node;
+		Node temp = node;
+		int length = 0;
+		while (temp != null) {
+			length++;
+			temp = temp.nextNode;
+		}
+		times = times % length;
+		if (times == 0)
+			return orgHead;
+		temp = node;
+		int count = 0;
+		Node end = null;
+		while (count < (length - times)) {
+			if (count == length - times - 1) {
+				end = temp;
+			}
+			temp = temp.nextNode;
+			count++;
+		}
+		end.nextNode = null;
+		Node head = temp;
+		while (temp.nextNode != null) {
+			temp = temp.nextNode;
+		}
+		temp.nextNode = orgHead;
+		firstNode = head;
+		return head;
+	}
 }

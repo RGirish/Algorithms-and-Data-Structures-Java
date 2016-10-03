@@ -197,4 +197,16 @@ public class LinkedList {
 		firstNode = head;
 		return head;
 	}
+
+	public Node removeDuplicatesFromSortedList(Node node) {
+		Node head = node;
+		Node temp = node;
+		while (temp != null) {
+			while (temp.nextNode != null && temp.n == temp.nextNode.n) {
+				temp.nextNode = temp.nextNode.nextNode;
+			}
+			temp = temp.nextNode;
+		}
+		return head;
+	}
 }

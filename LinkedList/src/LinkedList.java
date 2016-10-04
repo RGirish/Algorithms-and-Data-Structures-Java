@@ -236,4 +236,30 @@ public class LinkedList {
 			list.add(node.val);
 		}
 	}
+
+	public ListNode reverseAlternateLinks(ListNode node) {
+		ListNode A = node;
+		ListNode B = A.next;
+		ListNode head = B;
+		ListNode C = B.next;
+		ListNode D = C.next;
+		while (D != null) {
+			B.next = A;
+			A.next = D;
+			A = C;
+			B = D;
+			C = D.next;
+			if (C != null)
+				D = C.next;
+			else
+				D = null;
+		}
+		B.next = A;
+		if (C == null) {
+			A.next = null;
+		} else {
+			A.next = C;
+		}
+		return head;
+	}
 }

@@ -1,212 +1,239 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class LinkedList {
 
-	Node firstNode = null;
+	ListNode firstNode = null;
+	List<Integer> list = new ArrayList<>();
 
 	LinkedList(int n) {
-		firstNode = new Node();
+		firstNode = new ListNode();
 		firstNode.setValue(n);
 		firstNode.setNextNode(null);
 	}
 
 	public boolean insert(int n) {
-		Node temp = firstNode;
-		while (temp.nextNode != null) {
-			temp = temp.nextNode;
+		ListNode temp = firstNode;
+		while (temp.next != null) {
+			temp = temp.next;
 		}
-		Node newNode = new Node();
+		ListNode newNode = new ListNode();
 		newNode.setValue(n);
 		newNode.setNextNode(null);
-		temp.nextNode = newNode;
+		temp.next = newNode;
 		return true;
 	}
 
 	public void print() {
-		Node temp = firstNode;
+		ListNode temp = firstNode;
 		while (temp != null) {
-			System.out.print(temp.n + " -> ");
-			temp = temp.nextNode;
+			System.out.print(temp.val + " -> ");
+			temp = temp.next;
 		}
 		System.out.print("END");
 		System.out.println();
 	}
 
-	public void print(Node node) {
+	public void print(ListNode node) {
 		while (node != null) {
-			System.out.print(node.n + " -> ");
-			node = node.nextNode;
+			System.out.print(node.val + " -> ");
+			node = node.next;
 		}
 		System.out.print("END");
 		System.out.println();
 	}
 
 	public void removeFirst(int n) {
-		if (firstNode.n == n) {
-			firstNode = firstNode.nextNode;
+		if (firstNode.val == n) {
+			firstNode = firstNode.next;
 			return;
 		}
-		Node previous = firstNode;
-		Node current = firstNode;
+		ListNode previous = firstNode;
+		ListNode current = firstNode;
 		while (current != null) {
-			if (current.n == n) {
-				previous.nextNode = current.nextNode;
+			if (current.val == n) {
+				previous.next = current.next;
 				return;
 			}
 			previous = current;
-			current = current.nextNode;
+			current = current.next;
 		}
 	}
 
 	public void removeAll(int n) {
-		while (firstNode.n == n) {
-			firstNode = firstNode.nextNode;
+		while (firstNode.val == n) {
+			firstNode = firstNode.next;
 		}
-		Node previous = firstNode;
-		Node current = firstNode;
+		ListNode previous = firstNode;
+		ListNode current = firstNode;
 		while (current != null) {
-			if (current.n == n) {
-				previous.nextNode = current.nextNode;
-				current = current.nextNode;
+			if (current.val == n) {
+				previous.next = current.next;
+				current = current.next;
 				continue;
 			}
 			previous = current;
-			current = current.nextNode;
+			current = current.next;
 		}
 	}
 
 	public void search(int n) {
-		Node temp = firstNode;
+		ListNode temp = firstNode;
 		while (temp != null) {
-			if (temp.n == n) {
+			if (temp.val == n) {
 				System.out.println(n + " exists.");
 				return;
 			}
-			temp = temp.nextNode;
+			temp = temp.next;
 		}
 		System.out.println(n + " does not exist.");
 	}
 
-	public Node reverseSecondHalf(Node node) {
-		Node head = node;
-		Node slow = node;
-		Node fast = node;
-		while (fast.nextNode != null && fast.nextNode.nextNode != null) {
-			slow = slow.nextNode;
-			fast = fast.nextNode.nextNode;
+	public ListNode reverseSecondHalf(ListNode node) {
+		ListNode head = node;
+		ListNode slow = node;
+		ListNode fast = node;
+		while (fast.next != null && fast.next.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
 		}
 
 		// Halfway reached. Start reversing.
-		Node prev = slow.nextNode;
-		Node curr = prev.nextNode;
+		ListNode prev = slow.next;
+		ListNode curr = prev.next;
 		if (curr == null)
 			return head;
-		Node next = curr.nextNode;
-		prev.nextNode = null;
+		ListNode next = curr.next;
+		prev.next = null;
 		while (curr != null) {
-			curr.nextNode = prev;
+			curr.next = prev;
 			prev = curr;
 			curr = next;
 			if (next != null) {
-				next = next.nextNode;
+				next = next.next;
 			}
 		}
-		slow.nextNode = prev;
+		slow.next = prev;
 		return head;
 	}
 
-	public Node reverseBetween(Node node, int i, int j) {
-		Node head = node;
+	public ListNode reverseBetween(ListNode node, int i, int j) {
+		ListNode head = node;
 
 		// Traverse to the ith position
 		int pos = 0;
-		Node beforei = null;
+		ListNode beforei = null;
 		while (node != null && pos < i) {
 			pos++;
 			beforei = node;
-			node = node.nextNode;
+			node = node.next;
 		}
 
 		// Start to reverse, go till the jth position
-		Node firstPrev = node;
-		Node prev = node;
-		Node curr = node.nextNode;
-		Node next = curr.nextNode;
+		ListNode firstPrev = node;
+		ListNode prev = node;
+		ListNode curr = node.next;
+		ListNode next = curr.next;
 		while (curr != null && pos < j) {
-			curr.nextNode = prev;
+			curr.next = prev;
 			prev = curr;
 			curr = next;
 			if (next != null) {
-				next = next.nextNode;
+				next = next.next;
 			}
 			pos++;
 		}
-		firstPrev.nextNode = curr;
+		firstPrev.next = curr;
 		if (beforei == null) {
 			return prev;
 		} else {
-			beforei.nextNode = prev;
+			beforei.next = prev;
 		}
 		return head;
 	}
 
-	public Node reverse(Node node) {
-		Node prev = node;
-		Node curr = node.nextNode;
+	public ListNode reverse(ListNode node) {
+		ListNode prev = node;
+		ListNode curr = node.next;
 		if (curr == null) {
 			return node;
 		}
-		Node next = curr.nextNode;
-		prev.nextNode = null;
+		ListNode next = curr.next;
+		prev.next = null;
 		while (curr != null) {
-			curr.nextNode = prev;
+			curr.next = prev;
 			prev = curr;
 			curr = next;
 			if (next != null) {
-				next = next.nextNode;
+				next = next.next;
 			}
 		}
 		return prev;
 	}
 
-	public Node rotate(Node node, int times) {
-		Node orgHead = node;
-		Node temp = node;
+	public ListNode rotate(ListNode node, int times) {
+		ListNode orgHead = node;
+		ListNode temp = node;
 		int length = 0;
 		while (temp != null) {
 			length++;
-			temp = temp.nextNode;
+			temp = temp.next;
 		}
 		times = times % length;
 		if (times == 0)
 			return orgHead;
 		temp = node;
 		int count = 0;
-		Node end = null;
+		ListNode end = null;
 		while (count < (length - times)) {
 			if (count == length - times - 1) {
 				end = temp;
 			}
-			temp = temp.nextNode;
+			temp = temp.next;
 			count++;
 		}
-		end.nextNode = null;
-		Node head = temp;
-		while (temp.nextNode != null) {
-			temp = temp.nextNode;
+		end.next = null;
+		ListNode head = temp;
+		while (temp.next != null) {
+			temp = temp.next;
 		}
-		temp.nextNode = orgHead;
+		temp.next = orgHead;
 		firstNode = head;
 		return head;
 	}
 
-	public Node removeDuplicatesFromSortedList(Node node) {
-		Node head = node;
-		Node temp = node;
+	public ListNode removeDuplicatesFromSortedList(ListNode node) {
+		ListNode head = node;
+		ListNode temp = node;
 		while (temp != null) {
-			while (temp.nextNode != null && temp.n == temp.nextNode.n) {
-				temp.nextNode = temp.nextNode.nextNode;
+			while (temp.next != null && temp.val == temp.next.val) {
+				temp.next = temp.next.next;
 			}
-			temp = temp.nextNode;
+			temp = temp.next;
 		}
 		return head;
+	}
+
+	public int isPalindrome1(ListNode node) {
+		reverseReadLinkedList(node);
+		ListNode temp = node;
+		int i = 0;
+		while (temp != null) {
+			if (temp.val != list.get(i)) {
+				return 0;
+			}
+			temp = temp.next;
+			i++;
+		}
+		return 1;
+	}
+
+	private void reverseReadLinkedList(ListNode node) {
+		if (node.next == null) {
+			list.add(node.val);
+		} else {
+			reverseReadLinkedList(node.next);
+			list.add(node.val);
+		}
 	}
 }

@@ -7,7 +7,7 @@ public class LinkedList {
 	List<Integer> list = new ArrayList<>();
 
 	LinkedList(int n) {
-		firstNode = new ListNode();
+		firstNode = new ListNode(0);
 		firstNode.setValue(n);
 		firstNode.setNextNode(null);
 	}
@@ -17,7 +17,7 @@ public class LinkedList {
 		while (temp.next != null) {
 			temp = temp.next;
 		}
-		ListNode newNode = new ListNode();
+		ListNode newNode = new ListNode(0);
 		newNode.setValue(n);
 		newNode.setNextNode(null);
 		temp.next = newNode;
@@ -118,6 +118,8 @@ public class LinkedList {
 	}
 
 	public ListNode reverseBetween(ListNode node, int i, int j) {
+		i--;
+		j--;
 		ListNode head = node;
 
 		// Traverse to the ith position
@@ -133,6 +135,8 @@ public class LinkedList {
 		ListNode firstPrev = node;
 		ListNode prev = node;
 		ListNode curr = node.next;
+		if (curr == null)
+			return prev;
 		ListNode next = curr.next;
 		while (curr != null && pos < j) {
 			curr.next = prev;
@@ -271,7 +275,7 @@ public class LinkedList {
 
 		// If headB is smaller, make that the head of A
 		if (currB.val <= currA.val) {
-			ListNode newNode = new ListNode();
+			ListNode newNode = new ListNode(0);
 			newNode.val = currB.val;
 			newNode.next = currA;
 			head = newNode;
@@ -292,7 +296,7 @@ public class LinkedList {
 
 			// At this point, currA larger than currB. So insert currB before
 			// currA
-			ListNode newNode = new ListNode();
+			ListNode newNode = new ListNode(0);
 			newNode.val = currB.val;
 			newNode.next = currA;
 			prevA.next = newNode;
@@ -308,7 +312,7 @@ public class LinkedList {
 		// the end of A.
 		if (currA == null && currB != null) {
 			while (currB != null) {
-				ListNode newNode = new ListNode();
+				ListNode newNode = new ListNode(0);
 				newNode.val = currB.val;
 				newNode.next = null;
 				prevA.next = newNode;
@@ -371,6 +375,118 @@ public class LinkedList {
 			slow = slow.next;
 		}
 		slowp.next = slow.next;
+		return head;
+	}
+
+	public ListNode addTwoNumbers(ListNode a, ListNode b) {
+		ListNode ta = a, tb = b;
+		int carry = 0;
+
+		ListNode latest = new ListNode(0);
+		latest.next = null;
+		String sum = String.valueOf(ta.val + tb.val + carry);
+		if (sum.length() == 1) {
+			latest.val = Integer.valueOf(sum);
+		} else {
+			latest.val = Integer.valueOf("" + sum.charAt(1));
+			carry = Integer.valueOf("" + sum.charAt(0));
+		}
+		ListNode head = latest;
+		ta = ta.next;
+		tb = tb.next;
+
+		while (!(ta == null && tb == null)) {
+			ListNode node = new ListNode(0);
+			latest.next = node;
+			latest = node;
+			node.next = null;
+			if (ta != null && tb != null)
+				sum = String.valueOf(ta.val + tb.val + carry);
+			else if (ta == null)
+				sum = String.valueOf(tb.val + carry);
+			else if (tb == null)
+				sum = String.valueOf(ta.val + carry);
+			carry = 0;
+			if (sum.length() == 1) {
+				node.val = Integer.valueOf(sum);
+			} else {
+				node.val = Integer.valueOf("" + sum.charAt(1));
+				carry = Integer.valueOf("" + sum.charAt(0));
+			}
+			if (ta != null)
+				ta = ta.next;
+			if (tb != null)
+				tb = tb.next;
+		}
+		if (carry != 0) {
+			ListNode node = new ListNode(0);
+			latest.next = node;
+			latest = node;
+			node.next = null;
+			node.val = carry;
+		}
+		return head;
+	}
+
+	// Given 1-2-2-3-4-4-5, returns 1-3-5
+	// Kind of messy. Method2 is clean(er)
+	public ListNode removeDuplicatesFromSortedList2Method1(ListNode node) {
+		ListNode head = node;
+		ListNode temp = node;
+		ListNode prev = node;
+		boolean flag = false;
+		while (head.next != null && head.val == head.next.val) {
+			flag = true;
+			head = temp = prev = head.next;
+			if (head.next != null && head.val != head.next.val) {
+				flag = false;
+				head = temp = prev = head.next;
+			}
+		}
+		if (flag == true) {
+			flag = false;
+			head = temp = prev = head.next;
+		}
+		while (temp != null) {
+			while (temp.next != null && temp.val == temp.next.val) {
+				flag = true;
+				temp.next = temp.next.next;
+			}
+			if (flag) {
+				prev.next = temp.next;
+				flag = false;
+			} else {
+				prev = temp;
+			}
+			temp = temp.next;
+		}
+		return head;
+	}
+
+	// Given 1-2-2-3-4-4-5, returns 1-3-5
+	public ListNode removeDuplicatesFromSortedList2Method2(ListNode node) {
+		ListNode head = node;
+		ListNode temp = node;
+		while (head.next != null && head.val == head.next.val) {
+			head = temp = head.next;
+			if (head.next != null && head.val != head.next.val) {
+				head = temp = head.next;
+			} else if (head.next == null) {
+				return null;
+			}
+		}
+		while (temp != null) {
+			if (temp.next != null && temp.next.next != null
+					&& temp.next.val == temp.next.next.val) {
+				while (temp.next != null && temp.next.next != null
+						&& temp.next.val == temp.next.next.val) {
+					temp.next = temp.next.next;
+				}
+				temp.next = temp.next.next;
+			} else {
+				temp = temp.next;
+			}
+		}
 		return head;
 	}
 }

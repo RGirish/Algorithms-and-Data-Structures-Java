@@ -1,4 +1,3 @@
-
 public class ListNode {
 	int val;
 	ListNode next;
@@ -9,5 +8,10 @@ public class ListNode {
 
 	public void setNextNode(ListNode node) {
 		this.next = node;
+	}
+
+	ListNode(int x) {
+		val = x;
+		next = null;
 	}
 }

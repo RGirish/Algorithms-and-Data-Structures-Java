@@ -1,16 +1,22 @@
 public class Main {
 
 	public static void main(String[] args) {
-		LinkedList list = new LinkedList(10);
-		list.insert(20);
-		list.insert(30);
-		list.insert(40);
-		list.insert(50);
-		list.insert(60);
-		list.insert(70);
+		LinkedList list = new LinkedList(-1);
+		list.insert(3);
+		list.insert(5);
+		list.insert(10);
 		list.print();
 
-		ListNode node = list.reverseAlternateLinks(list.firstNode);
+		LinkedList listB = new LinkedList(0);
+		listB.insert(2);
+		listB.insert(4);
+		listB.insert(5);
+		listB.insert(6);
+		listB.insert(20);
+		listB.insert(25);
+		listB.print();
+
+		ListNode node = list.mergeSortedLists2(list.firstNode, listB.firstNode);
 		list.print(node);
 	}
 }

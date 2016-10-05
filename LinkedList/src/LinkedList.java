@@ -262,4 +262,96 @@ public class LinkedList {
 		}
 		return head;
 	}
+
+	// What a rookie would do
+	public ListNode mergeSortedLists(ListNode A, ListNode B) {
+		ListNode head = A;
+		ListNode currA = head, prevA = head;
+		ListNode currB = B;
+
+		// If headB is smaller, make that the head of A
+		if (currB.val <= currA.val) {
+			ListNode newNode = new ListNode();
+			newNode.val = currB.val;
+			newNode.next = currA;
+			head = newNode;
+			currB = currB.next;
+			currA = prevA = head;
+		}
+
+		// Loop till either of the curr's become null
+		outerloop: while (currA != null && currB != null) {
+			// Move ahead as long as currA is smaller when compared to currB
+			while (currA.val < currB.val) {
+				prevA = currA;
+				currA = currA.next;
+				if (currA == null) {
+					break outerloop;
+				}
+			}
+
+			// At this point, currA larger than currB. So insert currB before
+			// currA
+			ListNode newNode = new ListNode();
+			newNode.val = currB.val;
+			newNode.next = currA;
+			prevA.next = newNode;
+			prevA = newNode;
+
+			// Advance currB
+			currB = currB.next;
+		}
+
+		// At this point, it either means we're done inserting all of B's nodes
+		// into A or it means that we've come to the end of A. The following
+		// block is to take care of the case when we exit the while by reaching
+		// the end of A.
+		if (currA == null && currB != null) {
+			while (currB != null) {
+				ListNode newNode = new ListNode();
+				newNode.val = currB.val;
+				newNode.next = null;
+				prevA.next = newNode;
+				prevA = newNode;
+				currB = currB.next;
+			}
+		}
+		// For the other case (exiting the while by exhausting B, we do not need
+		// to do anything more)
+		return head;
+	}
+
+	// What a pro would do
+	// No extra space, O(N + M)
+	public ListNode mergeSortedLists2(ListNode A, ListNode B) {
+		ListNode backup = A;
+		ListNode ca, cb;
+		ca = A;
+		cb = B;
+		if (B.val < A.val) {
+			backup = B;
+			cb = cb.next;
+		} else {
+			backup = A;
+			ca = ca.next;
+		}
+		ListNode temp = backup;
+		while (ca != null && cb != null) {
+			if (cb.val < ca.val) {
+				temp.next = cb;
+				temp = temp.next;
+				cb = cb.next;
+			} else {
+				temp.next = ca;
+				temp = temp.next;
+				ca = ca.next;
+			}
+		}
+		if (cb != null) {
+			temp.next = cb;
+		} else if (ca != null) {
+			temp.next = ca;
+		}
+		return backup;
+	}
 }

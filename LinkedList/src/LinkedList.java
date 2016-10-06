@@ -90,6 +90,9 @@ public class LinkedList {
 	}
 
 	public ListNode reverseSecondHalf(ListNode node) {
+		if (node == null || node.next == null) {
+			return node;
+		}
 		ListNode head = node;
 		ListNode slow = node;
 		ListNode fast = node;
@@ -486,6 +489,83 @@ public class LinkedList {
 			} else {
 				temp = temp.next;
 			}
+		}
+		return head;
+	}
+
+	// List reordered to L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → ...
+	// Does it in O(n^2)
+	public ListNode reorderList(ListNode node) {
+		if (node == null)
+			return null;
+		ListNode head = node;
+		ListNode c = head, a = head.next;
+		ListNode temp1 = null, temp2 = null;
+		if (a == null)
+			return head;
+		while (a != temp2) {
+			temp1 = a;
+			temp2 = c;
+			while (temp1.next != null) {
+				temp2 = temp1;
+				temp1 = temp1.next;
+			}
+			if (temp2.next == a) {
+				break;
+			}
+			// Make new links
+			c.next = temp1;
+			temp2.next = null;
+			temp1.next = a;
+			// Move pointers
+			c = a;
+			a = a.next;
+			if (a == null)
+				break;
+			if (a.next == temp2) {
+				c.next = temp2;
+				temp2.next = a;
+				a.next = null;
+				break;
+			}
+		}
+		return head;
+	}
+
+	// List reordered to L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → ...
+	// Does it in O(n) - O(n) to reverse second half, O(n) to intertwine the
+	// links
+	public ListNode reorderList2(ListNode node) {
+		if (node == null || node.next == null)
+			return node;
+		node = reverseSecondHalf(node);
+		ListNode head = node;
+		ListNode slow = node;
+		ListNode fast = node;
+		while (fast.next != null && fast.next.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+		ListNode l1 = head;
+		ListNode l2 = head.next;
+		ListNode r1 = slow.next;
+		ListNode r2 = r1.next;
+		while (r1 != null) {
+			l1.next = r1;
+			r1.next = l2;
+			if (r2 == null) {
+				if (l2.next == slow.next) {
+					l2.next = null;
+				} else {
+					r1.next = null;
+				}
+				break;
+			}
+			// Move pointers
+			l1 = l2;
+			l2 = l2.next;
+			r1 = r2;
+			r2 = r2.next;
 		}
 		return head;
 	}

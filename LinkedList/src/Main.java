@@ -4,7 +4,7 @@ public class Main {
 		LinkedList list = new LinkedList(1);
 		list.print();
 
-		ListNode node = list.reorderList2(list.firstNode);
+		ListNode node = list.getCycleStartNode(list.firstNode);
 		list.print(node);
 	}
 }

@@ -569,4 +569,26 @@ public class LinkedList {
 		}
 		return head;
 	}
+
+	public ListNode getCycleStartNode(ListNode a) {
+		if (a == null || a.next == null)
+			return null;
+
+		ListNode fast = a, slow = a, slow2 = a;
+		while (true) {
+			slow = slow.next;
+			fast = fast.next.next;
+			if (fast == slow)
+				break;
+			if (fast == null)
+				return null;
+			if (fast.next == null)
+				return null;
+		}
+		while (slow2 != fast) {
+			slow2 = slow2.next;
+			fast = fast.next;
+		}
+		return slow2;
+	}
 }

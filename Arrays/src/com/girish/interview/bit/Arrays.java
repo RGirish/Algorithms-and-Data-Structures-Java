@@ -17,11 +17,44 @@ public class Arrays {
 
 	/**
 	 * Given an array of size N, that only contains numbers from 0 to N-1, finds
-	 * the number that occurs the most. Uses O(N) extra space.
+	 * the number that occurs the most. Uses O(1) space.
 	 * 
 	 * @return the number that appears the most.
 	 */
 	public static int findMostOccurringNumber(int[] values) {
+		for (int i = 0; i < values.length; ++i) {
+			int expectedIndex = values[i];
+			if (values[i] <= -1)
+				continue;
+			if (values[expectedIndex] <= -1)
+				values[expectedIndex]--;
+			else if (expectedIndex < i) {
+				values[expectedIndex] = -1;
+			} else if (values[expectedIndex] >= 0) {
+				int temp = values[expectedIndex];
+				values[expectedIndex] = -1;
+				values[i] = temp;
+				i--;
+			}
+		}
+		int min = Integer.MAX_VALUE;
+		int number = Integer.MIN_VALUE;
+		for (int i = 0; i < values.length; ++i) {
+			if (values[i] < min) {
+				min = values[i];
+				number = i;
+			}
+		}
+		return number;
+	}
+
+	/**
+	 * Given an array of size N, that only contains numbers from 0 to N-1, finds
+	 * the number that occurs the most. Uses O(N) extra space.
+	 * 
+	 * @return the number that appears the most.
+	 */
+	public static int findMostOccurringNumberNiave(int[] values) {
 		int[] array = new int[values.length];
 		for (int n : values)
 			array[n]++;

@@ -11,7 +11,29 @@ public class Arrays {
 		X.add(0);
 		X.add(1);
 		X.add(2);
-		System.out.println(firstMissingPositive(X));
+		System.out.println(findMostOccurringNumber(new int[] { 7, 7, 7, 2, 2,
+				3, 4, 4, 5 }));
+	}
+
+	/**
+	 * Given an array of size N, that only contains numbers from 0 to N-1, finds
+	 * the number that occurs the most. Uses O(N) extra space.
+	 * 
+	 * @return the number that appears the most.
+	 */
+	public static int findMostOccurringNumber(int[] values) {
+		int[] array = new int[values.length];
+		for (int n : values)
+			array[n]++;
+		int max = array[0];
+		int num = 0;
+		for (int i = 0; i < array.length; ++i) {
+			if (array[i] > max) {
+				max = array[i];
+				num = i;
+			}
+		}
+		return num;
 	}
 
 	/**

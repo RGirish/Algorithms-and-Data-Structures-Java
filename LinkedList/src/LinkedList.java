@@ -12,6 +12,44 @@ public class LinkedList {
 		firstNode.setNextNode(null);
 	}
 
+	public LinkedList() {
+		firstNode = null;
+	}
+
+	/**
+	 * Creates a linked list with a cycle in it, with the tail connecting to the
+	 * node # given as the first argument.
+	 * 
+	 * @param pointOfConnect
+	 *            the # of the node (starts from 0) at which the last node
+	 *            connects back to the list
+	 * @param values
+	 *            the values for each node in the list in order
+	 * @return returns the head pointer
+	 */
+	public ListNode createCyclicLinkedList(int pointOfConnect,
+			Integer... values) {
+		if (pointOfConnect >= values.length - 1) {
+			System.out
+					.println("Not a valid pointOfConnect given as the first argument. Can only be in the range [0, values.length-1]");
+			return null;
+		}
+		firstNode = new ListNode();
+		for (int i = 0; i < values.length; ++i)
+			insert(values[i]);
+		ListNode temp = firstNode, connectingNode = null;
+		for (int i = 0; i < pointOfConnect; ++i) {
+			temp = temp.next;
+		}
+		connectingNode = temp;
+		temp = firstNode;
+		while (temp.next != null) {
+			temp = temp.next;
+		}
+		temp.next = connectingNode;
+		return firstNode;
+	}
+
 	public boolean insert(int n) {
 		ListNode temp = firstNode;
 		while (temp.next != null) {

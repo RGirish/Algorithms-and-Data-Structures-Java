@@ -1,2 +1,2 @@
 # CTCI
-My tries at programs from Cracking the Coding Interview by Gayle Laakmann McDowell!
+General algo and ds stuff from interviewbit and other sites.

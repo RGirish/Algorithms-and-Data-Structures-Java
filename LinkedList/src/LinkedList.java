@@ -17,6 +17,40 @@ public class LinkedList {
 	}
 
 	/**
+	 * Given a linked list with a loop in it, reverses the loop.
+	 */
+	public ListNode reverseTheLoop(ListNode a) {
+		ListNode slow = a, fast = a;
+		while (fast != null && fast.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+			if (fast == slow) {
+				break;
+			}
+		}
+		if (fast == null || fast.next == null) {
+			System.out.println("List does not have a cycle in it.");
+			return null;
+		}
+		slow = a;
+		while (slow != fast) {
+			slow = slow.next;
+			fast = fast.next;
+		}
+		fast = fast.next;
+		ListNode ahead = fast.next;
+		slow.next = null;
+		while (ahead != null) {
+			fast.next = slow;
+			slow = fast;
+			fast = ahead;
+			ahead = ahead.next;
+		}
+		fast.next = slow;
+		return a;
+	}
+
+	/**
 	 * Creates a linked list with a cycle in it, with the tail connecting to the
 	 * node # given as the first argument.
 	 * 
@@ -34,14 +68,15 @@ public class LinkedList {
 					.println("Not a valid pointOfConnect given as the first argument. Can only be in the range [0, values.length-1]");
 			return null;
 		}
-		firstNode = new ListNode();
-		for (int i = 0; i < values.length; ++i)
+		firstNode = new ListNode(values[0]);
+		for (int i = 1; i < values.length; ++i)
 			insert(values[i]);
 		ListNode temp = firstNode, connectingNode = null;
 		for (int i = 0; i < pointOfConnect; ++i) {
 			temp = temp.next;
 		}
 		connectingNode = temp;
+
 		temp = firstNode;
 		while (temp.next != null) {
 			temp = temp.next;
@@ -67,6 +102,17 @@ public class LinkedList {
 		while (temp != null) {
 			System.out.print(temp.val + " -> ");
 			temp = temp.next;
+		}
+		System.out.print("END");
+		System.out.println();
+	}
+
+	public void printNNodes(ListNode node, int N) {
+		int count = 0;
+		while (node != null && count < N) {
+			System.out.print(node.val + " -> ");
+			node = node.next;
+			count++;
 		}
 		System.out.print("END");
 		System.out.println();

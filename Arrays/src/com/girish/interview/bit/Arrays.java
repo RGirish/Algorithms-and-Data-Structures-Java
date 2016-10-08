@@ -2,17 +2,127 @@ package com.girish.interview.bit;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Arrays {
 
 	public static void main(String[] args) {
-		List<Integer> X = new ArrayList<>();
-		X.add(0);
-		X.add(1);
-		X.add(2);
-		System.out.println(findMostOccurringNumber(new int[] { 7, 7, 7, 2, 2,
-				3, 4, 4, 5 }));
+		ArrayList<Integer> list = new ArrayList<>();
+		list.add(9775076);
+		list.add(860243460);
+		list.add(7);
+		list.add(8);
+		list.add(9);
+		String s = largestNumber(list);
+		System.out.println(s);
+	}
+
+	public static String largestNumber(final List<Integer> a) {
+		Collections.sort(a, new Comparator<Integer>() {
+			public int compare(Integer o1, Integer o2) {
+				String one = o1 + "" + o2;
+				String two = o2 + "" + o1;
+				return Long.valueOf(two).compareTo(Long.valueOf(one));
+			}
+		});
+		StringBuilder builder = new StringBuilder();
+		for (int n : a) {
+			builder.append(n);
+		}
+		int index = 0;
+		while (index < builder.length() - 1 && builder.charAt(index) == '0')
+			index++;
+		return builder.substring(index, builder.length());
+	}
+
+	/**
+	 * Finds the maximum sub-array of non negative numbers from an array. If
+	 * there is a tie, then returns the segment which has maximum length. If
+	 * there is still a tie, then returns the segment with minimum starting
+	 * index.
+	 */
+	public static ArrayList<Integer> maxset(ArrayList<Integer> a) {
+		long maxSum = Long.MIN_VALUE;
+		long sum = 0;
+		ArrayList<Integer> maxList = new ArrayList<Integer>();
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		for (int i = 0; i < a.size(); ++i) {
+			if (a.get(i) < 0) {
+				sum = 0;
+				list.clear();
+				continue;
+			} else {
+				list.add(a.get(i));
+				sum += a.get(i);
+				if (sum == maxSum) {
+					if (list.size() > maxList.size()) {
+						maxList.clear();
+						for (int n : list) {
+							maxList.add(n);
+						}
+					}
+				} else if (sum > maxSum) {
+					maxSum = sum;
+					maxList.clear();
+					for (int n : list) {
+						maxList.add(n);
+					}
+				}
+			}
+		}
+		return maxList;
+	}
+
+	/**
+	 * Given a matrix, if ij has a 0, makes row i and column j all 0s.
+	 */
+	public static void setZeroes(ArrayList<ArrayList<Integer>> a) {
+		ArrayList<Integer> rows = new ArrayList<>(a.size());
+		ArrayList<Integer> columns = new ArrayList<>(a.get(0).size());
+		for (int i = 0; i < a.size(); ++i) {
+			rows.add(0);
+		}
+		for (int i = 0; i < a.get(0).size(); ++i) {
+			columns.add(0);
+		}
+		for (int i = 0; i < a.size(); ++i) {
+			for (int j = 0; j < a.get(0).size(); ++j) {
+				if (a.get(i).get(j) == 0) {
+					rows.set(i, 1);
+					columns.set(j, 1);
+				}
+			}
+		}
+		ArrayList<Integer> empty = new ArrayList<>(a.get(0).size());
+		for (int i = 0; i < a.get(0).size(); ++i) {
+			empty.add(0);
+		}
+		for (int r = 0; r < rows.size(); ++r) {
+			if (rows.get(r) == 1) {
+				a.set(r, empty);
+			}
+		}
+		for (int c = 0; c < columns.size(); ++c) {
+			if (columns.get(c) == 1) {
+				for (ArrayList<Integer> row : a) {
+					row.set(c, 0);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Prints a matrix, given the matrix, the # of rows and the # of columns.
+	 */
+	private static void printMatrix(ArrayList<ArrayList<Integer>> a, int rows,
+			int columns) {
+		for (int i = 0; i < rows; ++i) {
+			for (int j = 0; j < columns; ++j) {
+				System.out.print(a.get(i).get(j) + " ");
+			}
+			System.out.println();
+		}
 	}
 
 	/**

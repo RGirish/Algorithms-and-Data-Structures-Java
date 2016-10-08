@@ -3,21 +3,74 @@ package com.girish.interview.bit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Arrays {
 
 	public static void main(String[] args) {
-		ArrayList<Integer> list = new ArrayList<>();
-		list.add(9775076);
-		list.add(860243460);
-		list.add(7);
-		list.add(8);
-		list.add(9);
-		String s = largestNumber(list);
-		System.out.println(s);
+		
 	}
 
+	/**
+	 * Given a matrix, returns a list of all the anti diagonals.
+	 */
+	public static ArrayList<ArrayList<Integer>> diagonal(
+			ArrayList<ArrayList<Integer>> a) {
+		ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>>();
+		if (a.size() == 1) {
+			list.add(a.get(0));
+			return list;
+		}
+		int col = 0, row = 0;
+
+		for (int i = 0; row < a.size() - 1; ++i) {
+			if (i < a.size()) {
+				col = i;
+				row = 0;
+			} else {
+				col = a.size() - 1;
+				row = i - a.size() + 1;
+			}
+			int r = row;
+			int c = col;
+			ArrayList<Integer> antiDiagonal = new ArrayList<Integer>();
+			do {
+				antiDiagonal.add(a.get(r).get(c));
+				r++;
+				c--;
+			} while (c >= 0 && r <= a.size() - 1);
+			list.add(antiDiagonal);
+		}
+		return list;
+	}
+
+	/**
+	 * Given an array of integers, returns indices of the two numbers such that
+	 * they add up to a specific target.
+	 */
+	public static int[] twoSum(int[] nums, int target) {
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		for (int i = 0; i < nums.length; ++i) {
+			if (map.containsKey(target - nums[i])) {
+				int ind1 = i;
+				int ind2 = map.get(target - nums[i]);
+				if (ind1 < ind2) {
+					return new int[] { ind1, ind2 };
+				} else {
+					return new int[] { ind2, ind1 };
+				}
+			}
+			map.put(nums[i], i);
+		}
+		return new int[] {};
+	}
+
+	/**
+	 * Given a list of positive numbers, finds the permutation of these that is
+	 * numerically the largest.
+	 */
 	public static String largestNumber(final List<Integer> a) {
 		Collections.sort(a, new Comparator<Integer>() {
 			public int compare(Integer o1, Integer o2) {

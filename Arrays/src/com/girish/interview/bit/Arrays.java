@@ -11,9 +11,9 @@ public class Arrays {
 
 	public static void main(String[] args) {
 		ArrayList<Interval> intervals = new ArrayList<Interval>();
-		intervals.add(new Interval(8, 10));
-		intervals.add(new Interval(11, 12));
-		ArrayList<Interval> result = insert(intervals, new Interval(3, 6));
+		intervals.add(new Interval(1, 3));
+		intervals.add(new Interval(6, 9));
+		ArrayList<Interval> result = insert(intervals, new Interval(2, 5));
 		for (Interval interval : result) {
 			System.out.println(interval.start + ", " + interval.end);
 		}
@@ -34,47 +34,28 @@ public class Arrays {
 		}
 	}
 
-	/**
-	 * Given an array of sorted non overlapping intervals, and another interval,
-	 * it returns a list of intervals, with the new one merged into the
-	 * originally given list.
-	 */
 	public static ArrayList<Interval> insert(ArrayList<Interval> intervals,
 			Interval newInterval) {
 		int i;
 		for (i = 0; i < intervals.size()
-				&& intervals.get(i).start <= newInterval.start; ++i) {
+				&& intervals.get(i).start < newInterval.start; ++i) {
 		}
-		if (intervals.get(i - 1).end > newInterval.start) {
-			Interval toBeMerged = intervals.get(i - 1);
-			intervals.remove(i - 1);
-			i--;
-			Interval merged = new Interval(toBeMerged.start, newInterval.end);
-			while (intervals.get(i).start > merged.start
-					&& intervals.get(i).end < merged.end) {
-				intervals.remove(i);
-			}
-			if (intervals.get(i).start < merged.end) {
-				merged = new Interval(merged.start, intervals.get(i).end);
-				intervals.remove(i);
-			}
-			intervals.add(merged);
-		} else if (i < intervals.size() - 1
-				&& intervals.get(i + 1).start >= newInterval.end) {
+		if (i == intervals.size())
 			intervals.add(newInterval);
-		} else if (i >= intervals.size() - 1) {
-			intervals.add(newInterval);
+		else
+			intervals.add(i, newInterval);
+		i = 0;
+		while (i < intervals.size() - 1) {
+			Interval curr = intervals.get(i);
+			Interval next = intervals.get(i + 1);
+			if (curr.end > next.start) {
+				intervals.remove(i);
+				int newEndTime = Math.max(curr.end, next.end);
+				intervals.set(i, new Interval(curr.start, newEndTime));
+			} else {
+				i++;
+			}
 		}
-		Collections.sort(intervals, new Comparator<Interval>() {
-			public int compare(Interval o1, Interval o2) {
-				if (o1.start == o2.start)
-					return 0;
-				else if (o1.start < o2.start)
-					return -1;
-				else
-					return 1;
-			}
-		});
 		return intervals;
 	}
 

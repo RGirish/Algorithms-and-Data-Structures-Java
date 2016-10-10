@@ -10,7 +10,72 @@ import java.util.Map;
 public class Arrays {
 
 	public static void main(String[] args) {
-		
+		ArrayList<Interval> intervals = new ArrayList<Interval>();
+		intervals.add(new Interval(8, 10));
+		intervals.add(new Interval(11, 12));
+		ArrayList<Interval> result = insert(intervals, new Interval(3, 6));
+		for (Interval interval : result) {
+			System.out.println(interval.start + ", " + interval.end);
+		}
+	}
+
+	public static class Interval {
+		int start;
+		int end;
+
+		Interval() {
+			start = 0;
+			end = 0;
+		}
+
+		Interval(int s, int e) {
+			start = s;
+			end = e;
+		}
+	}
+
+	/**
+	 * Given an array of sorted non overlapping intervals, and another interval,
+	 * it returns a list of intervals, with the new one merged into the
+	 * originally given list.
+	 */
+	public static ArrayList<Interval> insert(ArrayList<Interval> intervals,
+			Interval newInterval) {
+		int i;
+		for (i = 0; i < intervals.size()
+				&& intervals.get(i).start <= newInterval.start; ++i) {
+		}
+		if (intervals.get(i - 1).end > newInterval.start) {
+			Interval toBeMerged = intervals.get(i - 1);
+			intervals.remove(i - 1);
+			i--;
+			Interval merged = new Interval(toBeMerged.start, newInterval.end);
+			while (intervals.get(i).start > merged.start
+					&& intervals.get(i).end < merged.end) {
+				intervals.remove(i);
+			}
+			if (intervals.get(i).start < merged.end) {
+				merged = new Interval(merged.start, intervals.get(i).end);
+				intervals.remove(i);
+			}
+			intervals.add(merged);
+		} else if (i < intervals.size() - 1
+				&& intervals.get(i + 1).start >= newInterval.end) {
+			intervals.add(newInterval);
+		} else if (i >= intervals.size() - 1) {
+			intervals.add(newInterval);
+		}
+		Collections.sort(intervals, new Comparator<Interval>() {
+			public int compare(Interval o1, Interval o2) {
+				if (o1.start == o2.start)
+					return 0;
+				else if (o1.start < o2.start)
+					return -1;
+				else
+					return 1;
+			}
+		});
+		return intervals;
 	}
 
 	/**

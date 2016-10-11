@@ -6,14 +6,17 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 public class Arrays {
 
 	public static void main(String[] args) {
 		ArrayList<Interval> intervals = new ArrayList<Interval>();
 		intervals.add(new Interval(1, 3));
-		intervals.add(new Interval(6, 9));
-		ArrayList<Interval> result = insert(intervals, new Interval(2, 5));
+		intervals.add(new Interval(2, 6));
+		intervals.add(new Interval(8, 10));
+		intervals.add(new Interval(15, 18));
+		ArrayList<Interval> result = merge(intervals);
 		for (Interval interval : result) {
 			System.out.println(interval.start + ", " + interval.end);
 		}
@@ -34,6 +37,55 @@ public class Arrays {
 		}
 	}
 
+	/**
+	 * Given a collection of intervals, merges all overlapping intervals.
+	 */
+	public static ArrayList<Interval> merge(ArrayList<Interval> intervals) {
+		PriorityQueue<Interval> queue = new PriorityQueue<Interval>(
+				intervals.size(), new Comparator<Interval>() {
+					public int compare(Interval o1, Interval o2) {
+						int c = Integer.compare(o1.start, o2.start);
+						if (c != 0)
+							return c;
+						return Integer.compare(o1.end, o2.end);
+					}
+				});
+		for (Interval interval : intervals) {
+			queue.offer(interval);
+		}
+		Interval interval = queue.poll();
+		intervals.clear();
+		while (interval != null) {
+			if (intervals.isEmpty()) {
+				intervals.add(interval);
+				interval = queue.poll();
+				continue;
+			}
+			int size = intervals.size() - 1;
+			Interval curr = intervals.get(size);
+			if (curr.end > interval.start) {
+				System.out.println("merging [" + curr.start + ", " + curr.end
+						+ "] and [" + interval.start + ", " + interval.end
+						+ "]");
+				intervals.remove(size);
+				int newEndTime = Math.max(curr.end, interval.end);
+				Interval newInterval = new Interval(curr.start, newEndTime);
+				if (!(newInterval.start == newInterval.end && newInterval.start <= curr.end)) {
+					intervals.add(newInterval);
+				}
+			} else if (!(curr.start == interval.start && curr.end == interval.end)
+					&& !(interval.start == interval.end && interval.start <= curr.end)) {
+				intervals.add(interval);
+			}
+			interval = queue.poll();
+		}
+		return intervals;
+	}
+
+	/**
+	 * Inserts an Interval into a sorted list of Intervals, and merges some of
+	 * them if need be.
+	 */
 	public static ArrayList<Interval> insert(ArrayList<Interval> intervals,
 			Interval newInterval) {
 		int i;

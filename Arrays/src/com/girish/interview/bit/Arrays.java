@@ -11,15 +11,77 @@ import java.util.PriorityQueue;
 public class Arrays {
 
 	public static void main(String[] args) {
-		ArrayList<Interval> intervals = new ArrayList<Interval>();
-		intervals.add(new Interval(1, 3));
-		intervals.add(new Interval(2, 6));
-		intervals.add(new Interval(8, 10));
-		intervals.add(new Interval(15, 18));
-		ArrayList<Interval> result = merge(intervals);
-		for (Interval interval : result) {
-			System.out.println(interval.start + ", " + interval.end);
+		ArrayList<ArrayList<Integer>> result = generate(5);
+		for (ArrayList<Integer> list : result) {
+			for (int i : list) {
+				System.out.print(i + " ");
+			}
+			System.out.println();
 		}
+	}
+
+	/**
+	 * Prints the first n rows of the Pascal Triangle.
+	 */
+	public static ArrayList<ArrayList<Integer>> generate(int a) {
+		ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+		if (a == 0)
+			return result;
+		ArrayList<Integer> prev = new ArrayList<Integer>();
+		ArrayList<Integer> curr = new ArrayList<Integer>();
+		prev.add(1);
+		result.add(prev);
+		if (a == 1)
+			return result;
+		prev = new ArrayList<Integer>();
+		prev.add(1);
+		prev.add(1);
+		result.add(prev);
+		for (int i = 2; i < a; ++i) {
+			curr.add(1);
+			int j = 0;
+			while (j + 1 < prev.size()) {
+				curr.add(prev.get(j) + prev.get(j + 1));
+				j++;
+			}
+			curr.add(1);
+			result.add(curr);
+			int k = 0;
+			prev = new ArrayList<Integer>();
+			for (; k < curr.size(); ++k) {
+				prev.add(curr.get(k));
+			}
+			curr = new ArrayList<Integer>();
+		}
+		return result;
+	}
+
+	/**
+	 * Prints the nth row of the Pascal Triangle.
+	 */
+	public static ArrayList<Integer> getRow(int a) {
+		ArrayList<Integer> prev = new ArrayList<Integer>();
+		ArrayList<Integer> curr = new ArrayList<Integer>();
+		prev.add(1);
+		if (a == 0)
+			return prev;
+		prev.add(1);
+		for (int i = 1; i < a; ++i) {
+			int j = 0;
+			curr.add(1);
+			while (j + 1 < prev.size()) {
+				curr.add(prev.get(j) + prev.get(j + 1));
+				j++;
+			}
+			curr.add(1);
+			int k = 0;
+			for (; k < prev.size(); ++k) {
+				prev.set(k, curr.get(k));
+			}
+			prev.add(curr.get(k));
+			curr.clear();
+		}
+		return prev;
 	}
 
 	public static class Interval {

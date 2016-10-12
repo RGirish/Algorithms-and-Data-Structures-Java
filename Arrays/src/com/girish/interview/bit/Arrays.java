@@ -11,13 +11,60 @@ import java.util.PriorityQueue;
 public class Arrays {
 
 	public static void main(String[] args) {
-		ArrayList<ArrayList<Integer>> result = generate(5);
+		ArrayList<ArrayList<Integer>> result = generateMatrix(4);
 		for (ArrayList<Integer> list : result) {
 			for (int i : list) {
 				System.out.print(i + " ");
 			}
 			System.out.println();
 		}
+	}
+
+	/**
+	 * Given an integer n, generate a square matrix filled with elements from 1
+	 * to n2 in spiral order.
+	 */
+	public static ArrayList<ArrayList<Integer>> generateMatrix(int a) {
+		ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+		for (int i = 0; i < a; ++i) {
+			ArrayList<Integer> list = new ArrayList<Integer>();
+			for (int j = 0; j < a; ++j) {
+				list.add(0);
+			}
+			result.add(list);
+		}
+		int r1 = 0, r2 = a - 1, c1 = 0, c2 = a - 1;
+		int i = 0, j = 0;
+		boolean flag_r1 = false, flag_r2 = false, flag_c1 = false, flag_c2 = false;
+		for (int count = 1; count <= a * a; count++) {
+			result.get(i).set(j, count);
+			if (i == r1 && j < c2) {
+				if (flag_c1)
+					c1++;
+				j++;
+				flag_c1 = false;
+				flag_r1 = true;
+			} else if (j == c2 && i < r2) {
+				if (flag_r1)
+					r1++;
+				i++;
+				flag_r1 = false;
+				flag_c2 = true;
+			} else if (i == r2 && j > c1) {
+				if (flag_c2)
+					c2--;
+				j--;
+				flag_c2 = false;
+				flag_r2 = true;
+			} else if (j == c1 && i > r1) {
+				if (flag_r2)
+					r2--;
+				i--;
+				flag_r2 = false;
+				flag_c1 = true;
+			}
+		}
+		return result;
 	}
 
 	/**

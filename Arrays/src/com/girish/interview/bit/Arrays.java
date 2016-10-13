@@ -11,13 +11,58 @@ import java.util.PriorityQueue;
 public class Arrays {
 
 	public static void main(String[] args) {
-		ArrayList<ArrayList<Integer>> result = generateMatrix(4);
-		for (ArrayList<Integer> list : result) {
-			for (int i : list) {
-				System.out.print(i + " ");
-			}
-			System.out.println();
+		ArrayList<Integer> array = new ArrayList<Integer>();
+		array.add(1);
+		array.add(2);
+		array.add(5);
+		array.add(4);
+		array.add(5);
+		array.add(6);
+		ArrayList<Integer> list = repeatedAndMissingNumber(array);
+		for (int n : list) {
+			System.out.println(n);
 		}
+
+	}
+
+	/**
+	 * Finds the number that repeats itself, and the number that is missing.
+	 */
+	public static ArrayList<Integer> repeatedAndMissingNumber(
+			final List<Integer> a) {
+		long sum = 0;
+		long sumi = 0;
+		long sumOfSq = 0;
+		long sumOfSqi = 0;
+		for (int i = 0; i < a.size() - 1; ++i) {
+			sumi += (i + 1);
+			sumOfSqi += (i + 1) * (i + 1);
+			sum += a.get(i);
+			sumOfSq += (a.get(i) * a.get(i));
+		}
+		long diffOfAB = Math.abs(sum - sumi);
+		long diffOfABSq = Math.abs(sumOfSq - sumOfSqi);
+		long sumOfAB = diffOfABSq / diffOfAB;
+
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		list.add((int) ((sumOfAB + diffOfAB) / 2));
+		list.add((int) ((sumOfAB - diffOfAB) / 2));
+		return list;
+	}
+
+	/**
+	 * Finds a number that repeats itself in the given array.
+	 */
+	public static int repeatedNumber(final List<Integer> a) {
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		for (int i = 0; i < a.size(); ++i) {
+			int n = a.get(i);
+			if (map.containsKey(n))
+				return n;
+			else
+				map.put(n, 1);
+		}
+		return -1;
 	}
 
 	/**
